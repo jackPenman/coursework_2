@@ -7,7 +7,7 @@ pipeline {
                 echo 'Building..'
             }
         }
-tage('Sonarqube') {
+        stage('Sonarqube') {
     environment {
         scannerHome = tool 'SonarQubeScanner'
     }
