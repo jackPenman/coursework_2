@@ -10,7 +10,7 @@ pipeline {
     }
 }
             steps {
-                echo 'Building..'
+                node server.js
             }
         }
 		
