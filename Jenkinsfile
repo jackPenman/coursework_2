@@ -17,13 +17,19 @@ pipeline {
         }
     }
 }
- stage('Push image') {
-		steps {
-        withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
-            push("${env.BUILD_NUMBER}")
-            push("latest")
+stage('Build and Push Docker Images'){
+    steps{
+        script {
+            docker.withRegistry('https://registry.hub.docker.com', docker-hub-credentials) {
+                def customImage = docker.build(server)
+                  push("${env.BUILD_NUMBER}")
+                customImage.push("latest")
+                sh "docker rmi --force \$(docker images -q ${customImage.id} | uniq)"
+            }
         }
     }
-	}
+}
     }
 }
+
+
