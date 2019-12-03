@@ -5,7 +5,7 @@ pipeline {
         stage('Build') {
 		agent { docker { image 'node:latest' } }
             steps {
-                 sh 'npm --version'
+                 sh 'npm install'
             }
         }
 		
