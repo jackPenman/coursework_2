@@ -1,19 +1,12 @@
-
 pipeline {
- def app
     agent any
 
     stages {
-    stage('Clone repository') {
-
-        checkout scm
-    }
-
-    stage('Build image') {
-
-        app = docker.build("getintodevops/hellonode")
-    }
-
+        stage('Build') {
+            steps {
+                echo 'Building..'
+            }
+        }
         stage('Sonarqube') {
     environment {
         scannerHome = tool 'SonarQubeScanner'
@@ -24,11 +17,10 @@ pipeline {
         }
     }
 }
-    stage('Push image') {
-        docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
-            app.push("${env.BUILD_NUMBER}")
-            app.push("latest")
+        stage('Deploy') {
+            steps {
+                echo 'Deploying....'
+            }
         }
-    }
     }
 }
