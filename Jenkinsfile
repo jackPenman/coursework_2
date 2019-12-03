@@ -1,8 +1,9 @@
 pipeline {
-    agent { docker { image 'node:latest' } }
+    agent any
 
     stages {
         stage('Build') {
+		agent { docker { image 'node:latest' } }
             steps {
                  sh 'npm --version'
             }
