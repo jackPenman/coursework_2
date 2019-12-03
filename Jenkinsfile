@@ -8,9 +8,8 @@ pipeline {
         image 'node:latest'
 
     }
-}
-            steps {
-                node server.js
+}  steps {
+                  sh 'npm --version'
             }
         }
 		
