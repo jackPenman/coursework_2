@@ -1,12 +1,15 @@
-pipeline {
-    agent any
+node {
+    def app
 
-    stages {
-        stage('Build') {
-            steps {
-                echo 'Building..'
-            }
-        }
+    stage('Clone repository') {
+        checkout scm
+    }
+
+    stage('Build image') {
+
+        app = docker.build("server")
+    }
+
         stage('Sonarqube') {
     environment {
         scannerHome = tool 'SonarQubeScanner'
@@ -17,10 +20,11 @@ pipeline {
         }
     }
 }
-        stage('Deploy') {
-            steps {
-                echo 'Deploying....'
-            }
+
+    stage('Push image') {
+        docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
+            app.push("${env.BUILD_NUMBER}")
+            app.push("latest")
         }
     }
 }
