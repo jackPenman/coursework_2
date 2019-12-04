@@ -4,14 +4,13 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-			echo 'BUILDING'
-                 sh 'export DOCKERID=jpenma200'
-				 sh 'docker image build --tag $DOCKERID/server:1.0 .'
+			  script {
+          docker.build registry + ":$BUILD_NUMBER"
+        }
             }
         }
 		
         stage('Sonarqube') {
-		agent any
     environment {
         scannerHome = tool 'SonarQubeScanner'
     }
