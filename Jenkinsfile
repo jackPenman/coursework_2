@@ -16,7 +16,7 @@ pipeline {
         stage('Build') {
             steps {
 			  script {
-          docker.build registry + ":$BUILD_NUMBER"
+         dockerImage = docker.build registry + ":$BUILD_NUMBER"
         }
             }
         }
@@ -30,6 +30,16 @@ pipeline {
             sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=sonar-js -Dsonar.sources=." 
         }
     }
+}
+
+stage('Deploy Image') {
+  steps{
+    script {
+      docker.withRegistry( '', registryCredential ) {
+        dockerImage.push()
+      }
+    }
+  }
 }
     }
 }
