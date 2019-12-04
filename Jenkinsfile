@@ -7,7 +7,6 @@ pipeline {
 			echo 'BUILDING'
                  sh 'export DOCKERID=jpenma200'
 				 sh 'docker image build --tag $DOCKERID/server:1.0 .'
-				 sh 'docker container run \ --detach \ --publish 80:80 \ --name linux_tweet_app \ $DOCKERID/server:1.0'
             }
         }
 		
