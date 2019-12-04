@@ -1,7 +1,18 @@
 pipeline {
     agent any
 
+  environment {
+    registry = "jpenma200/coursework2"
+    registryCredential = 'dockerhub'
+  }
+
     stages {
+	
+	stage('Cloning Git') {
+  steps {
+    git 'https://github.com/jackPenman/coursework_2.git'
+  }
+}
         stage('Build') {
             steps {
 			  script {
