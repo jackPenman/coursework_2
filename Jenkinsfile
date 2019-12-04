@@ -21,6 +21,16 @@ pipeline {
             }
         }
 		
+		stage('Deploy Image') {
+  steps{
+    script {
+      docker.withRegistry( '', registryCredential ) {
+        dockerImage.push()
+      }
+    }
+  }
+}
+		
         stage('Sonarqube') {
     environment {
         scannerHome = tool 'SonarQubeScanner'
@@ -32,15 +42,7 @@ pipeline {
     }
 }
 
-stage('Deploy Image') {
-  steps{
-    script {
-      docker.withRegistry( '', registryCredential ) {
-        dockerImage.push()
-      }
-    }
-  }
-}
+
     }
 }
 
