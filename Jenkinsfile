@@ -45,12 +45,10 @@ pipeline {
 	stage('update application'){
 		
 		steps{
-		sh"${ ssh  azureuser@40.76.45.129}"
+		sh"${ssh azureuser@40.76.45.129}"
 		sh"${echo $TEST}"
 		}
-
 }
-
 
     }
 }
