@@ -1,0 +1,51 @@
+- name: Configure Node VM
+  hosts: azure
+  user: azureuser
+  become: yes
+
+  vars:
+    myResourceGroup: ansible
+    myVM: ansible-node
+
+  tasks:
+
+  - name: Install Various Packages
+    apt:
+      update_cache: yes
+      name: "{{ packages }}"
+    vars:
+      packages:
+      - libssl-dev
+      - libffi-dev
+      - python-dev
+      - python-pip
+
+  - name: Install Ansible for Azure
+    command: pip install ansible[azure]
+
+  - stat:
+      path: /home/azureuser/docker_node.sh
+    register: result
+
+  - name: Copy docker_node.sh to Node
+    copy:
+      src: ./docker_node.sh
+      dest: /home/azureuser/docker_node.sh
+    when: result.stat.exists == false
+
+  - name: Set docker.sh permissions
+    command: chmod +x /home/azureuser/docker_node.sh
+
+  - name: Run Docker installation script
+    command: sudo /home/azureuser/docker_node.sh
+    
+  - name: Copy k8-install.sh to Node
+    copy:
+      src: ./k8-install.sh
+      dest: /home/azureuser/k8-install.sh
+    
+  - name: Set k8-install.sh permissions
+    command: chmod +x /home/azureuser/k8-install.sh
+    
+  - name: Run k8s installation script
+    command: sudo /home/azureuser/k8-install.sh
