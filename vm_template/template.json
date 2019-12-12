@@ -1,0 +1,73 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "virtualMachines_Coursework2_name": {
+            "defaultValue": "Coursework2",
+            "type": "String"
+        },
+        "disks_Coursework2_disk1_cfb4c86c89b240529c6924fd8becad20_externalid": {
+            "defaultValue": "/subscriptions/36ea9ab8-a1dc-4eee-9fc6-a43adb078fa8/resourceGroups/COURSEWORK2/providers/Microsoft.Compute/disks/Coursework2_disk1_cfb4c86c89b240529c6924fd8becad20",
+            "type": "String"
+        },
+        "networkInterfaces_coursework2139_externalid": {
+            "defaultValue": "/subscriptions/36ea9ab8-a1dc-4eee-9fc6-a43adb078fa8/resourceGroups/Coursework2/providers/Microsoft.Network/networkInterfaces/coursework2139",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Compute/virtualMachines",
+            "apiVersion": "2019-03-01",
+            "name": "[parameters('virtualMachines_Coursework2_name')]",
+            "location": "eastus",
+            "properties": {
+                "hardwareProfile": {
+                    "vmSize": "Standard_D2s_v3"
+                },
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "Canonical",
+                        "offer": "UbuntuServer",
+                        "sku": "16.04-LTS",
+                        "version": "latest"
+                    },
+                    "osDisk": {
+                        "osType": "Linux",
+                        "name": "[concat(parameters('virtualMachines_Coursework2_name'), '_disk1_cfb4c86c89b240529c6924fd8becad20')]",
+                        "createOption": "FromImage",
+                        "caching": "ReadWrite",
+                        "managedDisk": {
+                            "id": "[parameters('disks_Coursework2_disk1_cfb4c86c89b240529c6924fd8becad20_externalid')]"
+                        }
+                    },
+                    "dataDisks": []
+                },
+                "osProfile": {
+                    "computerName": "[parameters('virtualMachines_Coursework2_name')]",
+                    "adminUsername": "jpenma200",
+                    "linuxConfiguration": {
+                        "disablePasswordAuthentication": false,
+                        "provisionVMAgent": true
+                    },
+                    "secrets": [],
+                    "allowExtensionOperations": true
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[parameters('networkInterfaces_coursework2139_externalid')]"
+                        }
+                    ]
+                },
+                "diagnosticsProfile": {
+                    "bootDiagnostics": {
+                        "enabled": true,
+                        "storageUri": "https://coursework2diag.blob.core.windows.net/"
+                    }
+                }
+            }
+        }
+    ]
+}
