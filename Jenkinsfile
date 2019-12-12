@@ -41,6 +41,16 @@ pipeline {
         }
     }
 }
+
+	stage('update application'){
+		
+		steps{
+		sleep (10)
+		sh 'ssh azureuser@40.76.45.129 kubectl set image deployments/coursework2 coursework2=jpenma200/coursework2:$BUILD_NUMBER'
+		
+		}
+}
+
     }
 }
 
